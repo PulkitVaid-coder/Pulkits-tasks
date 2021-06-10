@@ -7,7 +7,10 @@
  */
 
 import React from 'react';
-import type {Node} from 'react';
+import type { Node } from 'react';
+import { HelloComponent } from './HelloComponent'
+import { withStyling } from './withStylingHOC';
+const EnhancedHello = withStyling(HelloComponent);
 import {
   SafeAreaView,
   ScrollView,
@@ -70,6 +73,9 @@ const App: () => Node = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
+          
+          <EnhancedHello name=' Look at me'/>
+         
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.js</Text> to change this
             screen and then come back to see your edits.
@@ -110,3 +116,5 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+
+
