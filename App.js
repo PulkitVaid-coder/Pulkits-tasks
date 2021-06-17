@@ -7,24 +7,20 @@
  */
 //import 'react-native-gesture-handler';
 import * as React from 'react';
-import  FlatList  from './Flatlist'
+import FlatList from './Flatlist'
+import Progress from './ProgressBar'
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-function HomeScreen() {
+function ProgressScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
-    </View>
+    <Progress></Progress>
   );
 }
 
-function SettingsScreen() {
+function FlatListScreen() {
   return (
-    // <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    //   <Text>Settings!</Text>
-    // </View>
     <FlatList></FlatList>
   );
 }
@@ -35,8 +31,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name="ProgressBar" component={HomeScreen} />
-        <Tab.Screen name="Flatlist" component={SettingsScreen} />
+        <Tab.Screen name="ProgressBar" component={ProgressScreen} />
+        <Tab.Screen name="Flatlist" component={FlatListScreen}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
