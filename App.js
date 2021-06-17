@@ -7,6 +7,7 @@
  */
 //import 'react-native-gesture-handler';
 import * as React from 'react';
+import  FlatList  from './Flatlist'
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -21,9 +22,10 @@ function HomeScreen() {
 
 function SettingsScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
+    // <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    //   <Text>Settings!</Text>
+    // </View>
+    <FlatList></FlatList>
   );
 }
 
