@@ -5,7 +5,6 @@ import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react
 function Item({ item }) {
   if (item.index % 2 == 0) {
     return (
-      
       <View style={styles.listItem1}>
         <Image source={{ uri: item.photo }} style={{ width: 60, height: 60, borderRadius: 30,}} />
         <View style={{ alignItems: "flex-end", flex: 1,margin:15 }}>
@@ -28,58 +27,148 @@ function Item({ item }) {
 }
 
 export default class App extends React.Component {
-  state = {
-    data:[
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [
         {
-            "name": "Michael Jordan",
-            "message": " Hello there",
-            "photo": "https:\/\/randomuser.me\/api\/portraits\/men\/43.jpg",
-            "index": 1
+          "name": "Michael Jordan",
+          "message": " Hello there",
+          "photo": "https:\/\/randomuser.me\/api\/portraits\/men\/43.jpg",
+          "index": 1
             
         },
         {
-            "name": "Alexa",
-            "message": "Hey",
-            "photo": "https:\/\/randomuser.me\/api\/portraits\/women\/44.jpg",
-            "index":2
+          "name": "Alexa",
+          "message": "Hey",
+          "photo": "https:\/\/randomuser.me\/api\/portraits\/women\/44.jpg",
+          "index": 2
             
         },
         {
-            "name": "Michelle",
-            "message": "How are you guys ?",
-            "photo": "https:\/\/randomuser.me\/api\/portraits\/women\/68.jpg",
-            "index":3
+          "name": "Michelle",
+          "message": "How are you guys ?",
+          "photo": "https:\/\/randomuser.me\/api\/portraits\/women\/68.jpg",
+          "index": 3
         },
         {
-            "name": "Ann",
-            "message": "we are good",
-            "photo": "https:\/\/randomuser.me\/api\/portraits\/women\/65.jpg",
-            "index":4
+          "name": "Ann",
+          "message": "we are good",
+          "photo": "https:\/\/randomuser.me\/api\/portraits\/women\/65.jpg",
+          "index": 4
         },
-
-    ]
+        {
+          "name": "Ann",
+          "message": "hope keeps us alive",
+          "photo": "https:\/\/randomuser.me\/api\/portraits\/women\/65.jpg",
+          "index": 5
+        },
+        {
+          "name": "Ann",
+          "message": "rightly said",
+          "photo": "https:\/\/randomuser.me\/api\/portraits\/women\/65.jpg",
+          "index": 6
+        },
+        {
+          "name": "Ann",
+          "message": "makes sense",
+          "photo": "https:\/\/randomuser.me\/api\/portraits\/women\/65.jpg",
+          "index": 7
+        },
+        {
+          "name": "Ann",
+          "message": "somehow",
+          "photo": "https:\/\/randomuser.me\/api\/portraits\/women\/65.jpg",
+          "index": 8
+        },
+        {
+          "name": "Ann",
+          "message": "very true",
+          "photo": "https:\/\/randomuser.me\/api\/portraits\/women\/65.jpg",
+          "index": 9
+        },
+        {
+          "name": "Ann",
+          "message": "lets make it happen",
+          "photo": "https:\/\/randomuser.me\/api\/portraits\/women\/65.jpg",
+          "index": 10
+        },
+        {
+          "name": "Ann",
+          "message": "last message !!",
+          "photo": "https:\/\/randomuser.me\/api\/portraits\/women\/65.jpg",
+          "index": 11
+        }
+      ],
+      showButton: "true"
+    }
+    this.onViewableItemsChanged = this.onViewableItemsChanged.bind(this);
+    this.viewabilityConfig = { viewAreaCoveragePercentThreshold: 50 }
   }
 
+    onViewableItemsChanged = ({ viewableItems, changed }) =>
+    {
+      console.log("Visible items are", viewableItems);
+      console.log("Changed in this iteration", changed);
+      for (var i = 0; i < viewableItems.length; i++) {
+        if (viewableItems[i].key === 10) {
+          this.setState({ showButton: 'false' })
+        }
+        else {
+          this.setState({ showButton: 'true' })
+        }
+    }
+    }
+  
+    
+  render() {
+    let listViewRef;
+    const { showButton } = this.state;
 
-  render(){
-    return (
-      <View style={styles.container}>
-        <FlatList
-          style={{flex:1}}
-          data={this.state.data}
-          renderItem={({ item }) => <Item item={item}/>}
-          keyExtractor={item => item.index}
-        />
-      </View>
-    );
+    const EndButtonHandler = () => {
+      listViewRef.scrollToEnd({ animated: true });
+    }
+
+    const renderScrollButton = () => {
+      if (showButton  === 'true') {
+        return (
+          <TouchableOpacity style={[styles.buttonStyle, { right: 10 }]} onPress={EndButtonHandler}>
+            <Text style={styles.text}>{'Scroll Down'}</Text>
+          </TouchableOpacity>
+        )
+       }
+      }
+    
+      return (
+        <View style={styles.container}>
+          <Text></Text>
+          <FlatList
+            style={{ flex: 1 }}
+            data={this.state.data}
+            renderItem={({ item }) => <Item item={item} />}
+            keyExtractor={item => item.index}
+            ref={(ref) => {
+              listViewRef = ref;
+            }}
+            onViewableItemsChanged={this.onViewableItemsChanged}
+            viewabilityConfig={
+              this.viewabilityConfig
+            }
+          />
+          {renderScrollButton()}
+        </View>
+      )
+    }
   }
-}
+
+  
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F7F7F7',
-    marginTop:60
+    marginTop:40
   },
   listItem:{
     margin:10,
@@ -100,5 +189,14 @@ const styles = StyleSheet.create({
     alignSelf:"center",
     flexDirection:"row-reverse",
     borderRadius:5
+  },
+  buttonStyle: {
+    position: 'absolute',
+    width: 60,
+    height: 60,
+    alignItems: "center",
+    justifyContent: 'center',
+    backgroundColor: 'yellow',
+    borderRadius:30
   }
 });
