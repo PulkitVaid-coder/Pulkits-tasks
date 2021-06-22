@@ -1,112 +1,114 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React, { Component } from 'react';
+import { View, StyleSheet, Button,Text } from 'react-native';
+import Card from './Card'
+import t from 'tcomb-form-native'; // 0.6.9
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const Form = t.form.Form;
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
-
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next: 
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+const User = t.struct({
+  name: t.String,
+  gender: t.String,
+  age: t.Integer,
+  location: t.enums({Mexico: 'Mexico', France: 'France'}, 'location'),
 });
 
-export default App;
+const formStyles = {
+  ...Form.stylesheet,
+  formGroup: {
+    normal: {
+      marginBottom: 10
+    },
+  },
+  controlLabel: {
+    normal: {
+      color: 'blue',
+      fontSize: 18,
+      marginBottom: 7,
+      fontWeight: '600'
+    },
+    
+    error: {
+      color: 'red',
+      fontSize: 18,
+      marginBottom: 7,
+      fontWeight: '600'
+    }
+  }
+}
+
+const options = {
+  fields: {
+    gender: {
+      error: 'Enter your gender please !'
+    },
+    name: {
+      error: 'Enter your name please !'
+    },
+    age: {
+      error: 'Enter your age please !'
+    },
+    location: {
+      error: 'Enter your location please !'
+    },
+  },
+  stylesheet: formStyles,
+};
+
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      show : false
+    }
+  }
+  
+  
+  render() {
+    let{ show } = this.state
+    const showCard = () => {
+      if (show) {
+        return (
+          <Card>
+            {this._form.getValue()}
+          </Card>
+        )
+      }
+      else {
+        return (
+            <Text></Text>
+        )
+      }
+    }
+
+    const handleSubmit = () => {
+    this.setState({ show: true })
+    const value = this._form.getValue();
+    console.log('value: ', value);
+  }
+    
+    return (
+      <View style={styles.container}>
+        <Form 
+          ref={c => this._form = c}
+          type={User} 
+          options={options}
+        />
+        <Button
+          title="Sign Up!"
+          onPress={handleSubmit}
+        />
+        {showCard()}
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    marginTop: 50,
+    padding: 20,
+    backgroundColor: '#ffffff',
+  },
+});
+1
