@@ -1,112 +1,98 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React, {Component} from 'react';
+import { StyleSheet, View,Text, TouchableOpacity} from 'react-native';
+import Accordian from './Accordion'
+import { Colors } from './Colors';
+import Icon from "react-native-vector-icons/MaterialIcons";
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+export default class App extends Component {
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  constructor(props) {
+    super(props);
+    this.state = {
+      menu :[
+        { 
+          title: 'Non Veg Biryanis', 
+          data: [
+            {key:'Chicken Biryani\n20 calories', value:false},
+            {key:'Mutton Biryani\n20 calories', value:false},
+            {key:'Prawns Biryani\n20 calories', value:false},
+          ] 
+        },
+        { 
+          title: 'Pizzas',
+          data: [
+            {key:'Chicken Dominator\n20 calories', value:false},
+            {key:'Peri Peri Chicken\n20 calories', value:false},
+            {key:'Indie Tandoori Paneer\n20 calories', value:false},
+            {key:'Veg Extraveganza\n20 calories', value:false}
+          ]
+        },
+        { 
+         title: 'Drinks',
+         data: [
+           {key:'Cocktail\n20 calories', value:false},
+           {key:'Mocktail\n20 calories', value:false},
+           {key:'Lemon Soda\n20 calories', value:false},
+           {key:'Orange Soda\n20 calories', value:false}
+          ]
+        },
+        { 
+          title: 'Deserts',
+          data: [
+            {key:'Choco Lava Cake\n20 calories', value:false},
+            {key:'Gulabjamun\n20 calories', value:false},
+            {key:'Kalajamun\n20 calories', value:false},
+            {key:'Jalebi\n20 calories', value:false}
+          ]
+        },
+      ]
+     }
+  }
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
-
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next: 
-          </Section>
-          <LearnMoreLinks />
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style = {{justifyContent:"space-between",flexDirection:'row'}}>
+          <TouchableOpacity><Icon name={'keyboard-arrow-left'} size={30} color={Colors.BROWN}></Icon></TouchableOpacity>
+          <Text style={styles.texxt}>Create Your Own Meal</Text>
+        <TouchableOpacity style = {{flexDirection:"row-reverse",justifyContent:"flex-start"}}><Icon name={'shopping-cart'} size={30} color={Colors.BROWN}></Icon></TouchableOpacity>
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+        <Text style={styles.texxxt}>Mini Size</Text>
+        { this.renderAccordians() }
+      </View>
+    );
+  }
+
+  renderAccordians=()=> {
+    const items = [];
+    for (item of this.state.menu) {
+        items.push(
+            <Accordian 
+                title = {item.title}
+                data = {item.data}
+            />
+        );
+    }
+    return items;
+}
+}
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+   flex:1,
+   paddingTop:0,
+   backgroundColor:Colors.WHITE,
+   
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  texxt: {
+    fontSize: 20,
+    alignSelf: 'center',
+   
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  texxxt: {
+    color: 'grey',
+    alignSelf: 'center',
+    marginBottom:20
+    
+  }
 });
-
-export default App;
